@@ -64,3 +64,10 @@ functions:
           path: /metrics
           method: post
           cors: true
+  githubMetricsCreate:
+    handler: com.serverless.GithubMetricsCreateHandler
+    events:
+      - http:
+          path: /metrics/github
+          method: post
+          cors: true
