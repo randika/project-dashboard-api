@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serverless.mappers.GithubPushEvent;
 import com.serverless.model.Metric;
+import com.serverless.model.MetricGithub;
 import org.apache.log4j.Logger;
 
 import java.util.Collections;
@@ -34,7 +35,14 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
                 GithubPushEvent githubPushEvent = OBJECT_MAPPER.readValue(body, GithubPushEvent.class);
 
                 String branch = githubPushEvent.getRef();
-                logger.info("branch = " + branch);
+
+
+                MetricGithub metricGithub = new MetricGithub(
+                        "username",
+                        branch
+                );
+                
+                metric.setMetricGithub(metricGithub);
 
             }else if(githubEventName.equalsIgnoreCase("create")){
                     metric.setMetricType("github.branch.created"); // Triggered on created branch or tag.
