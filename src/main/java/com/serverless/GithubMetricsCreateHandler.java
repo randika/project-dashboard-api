@@ -26,12 +26,14 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
             // create the Product object for post
             Metric metric = new Metric();
 
-            String githubEventType = body.get("metricType").asText();
+            JsonNode headers = new ObjectMapper().readTree((String) input.get("headers"));
 
+            logger.info("Headers >>>>>>>>>>>> ");
+            logger.info(headers.toString());
+            logger.info("Headers >>>>>>>>>>>> END ");
 
-            if(githubEventType.equalsIgnoreCase("ref_type")){
             metric.setMetricType("github.branch.created");
-            }
+
 
             metric.save(metric);
 
