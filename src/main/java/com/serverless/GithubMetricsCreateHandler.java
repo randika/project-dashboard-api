@@ -37,7 +37,7 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
                 logger.info("branch = " + branch);
 
             }else if(githubEventName.equalsIgnoreCase("create")){
-                    metric.setMetricType("github.branch.created"); // Represents a created branch or tag.
+                    metric.setMetricType("github.branch.created"); // Triggered on created branch or tag.
             }else{
                 metric.setMetricType("github.uncategorized"); // catch everything else, un-tracked events
             }
