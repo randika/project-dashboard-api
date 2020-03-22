@@ -36,7 +36,7 @@ public class GithubPushEvent {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    static class Repository {
+    public static class Repository {
 
         private Owner owner;
         private String name;
@@ -67,7 +67,7 @@ public class GithubPushEvent {
         }
 
         @JsonIgnoreProperties(ignoreUnknown = true)
-        static class Owner {
+        public static class Owner {
 
             private String name;
 

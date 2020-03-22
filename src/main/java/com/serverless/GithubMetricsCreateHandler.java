@@ -35,8 +35,10 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
                 String branch = githubPushEvent.getRef();
                 metric.setBranch(branch);
 
-                metric.setUsername("username");
-                
+                GithubPushEvent.Repository repositoryData = githubPushEvent.getRepository();
+                String githubUser = repositoryData.getOwner().getName();
+                metric.setUsername(githubUser);
+
             }else if(githubEventName.equalsIgnoreCase("create")){
                     metric.setMetricType("github.branch.created"); // Triggered on created branch or tag.
             }else{
