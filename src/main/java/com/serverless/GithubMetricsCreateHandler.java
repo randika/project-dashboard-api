@@ -4,6 +4,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.serverless.mappers.GithubPushEvent;
 import com.serverless.model.Metric;
 import org.apache.log4j.Logger;
 
@@ -13,6 +14,7 @@ import java.util.Map;
 public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
 
     private final Logger logger = Logger.getLogger(this.getClass());
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
@@ -22,28 +24,29 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
         try {
 
             Map<String, Object> headers = (Map<String, Object>) input.get("headers");
-            String githubEvent = (String) headers.get("X-GitHub-Event");
-
-            JsonNode body = new ObjectMapper().readTree((String) input.get("body"));
+            String githubEventName = (String) headers.get("X-GitHub-Event");
+            
+            String body = (String) input.get("body");
             Metric metric = new Metric();
 
+            if(githubEventName.equalsIgnoreCase("push")){
+                metric.setMetricType("github.push.created"); // Triggered on a push to a repository branch or tag.
+                GithubPushEvent githubPushEvent = OBJECT_MAPPER.readValue(body, GithubPushEvent.class);
+
+                String branch = githubPushEvent.getRef();
+                logger.info("branch = " + branch);
 
 
-
-            if(githubEvent.equalsIgnoreCase("push")){
-                metric.setMetricType("github.event.push.created"); // Triggered on a push to a repository branch or tag.
-            }else if(githubEvent.equalsIgnoreCase("create")){
-                    metric.setMetricType("github.event.branch.created"); // Represents a created branch or tag.
+            }else if(githubEventName.equalsIgnoreCase("create")){
+                    metric.setMetricType("github.branch.created"); // Represents a created branch or tag.
             }else{
-                metric.setMetricType("github.event.unknown"); // catch everything else, un-tracked events
+                metric.setMetricType("github.uncategorized"); // catch everything else, un-tracked events
             }
-//
-//            metric.setUsername(body.get("sender.login").asText());
-//
-//            logger.info(">>>>>>>>" + body.get("sender.login").asText());
+
+
 
             metric.save(metric);
-            
+
             logger.info("metricId: " + metric.getMetricId() + " Saved successfully");
 
             // send the response back
