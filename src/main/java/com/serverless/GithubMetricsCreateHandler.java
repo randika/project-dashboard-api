@@ -29,8 +29,8 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
             MetricGithub metric = new MetricGithub();
 
             if(githubEventName.equalsIgnoreCase("push")){
-                metric.setMetricType("github.push.created"); // Triggered on a push to a repository branch or tag.
                 GithubPushEvent githubPushEvent = OBJECT_MAPPER.readValue(body, GithubPushEvent.class);
+                metric.setMetricType("github.push.created"); // Triggered on a push to a repository branch or tag.
 
                 String branch = githubPushEvent.getRef();
                 metric.setBranch(branch);
