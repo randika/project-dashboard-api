@@ -2,12 +2,15 @@
 
 # Supported Metrics
 
-1. As a project team member, I should be able to see branches or tags created in a github project for a period of time.
-2. As a project team member, I should be able to see code pushes created in a github project for a period of time.
+## Github
+1. As a project team member, I should be able to see branches or tags created in a github project for a given period of time.
+2. As a project team member, I should be able to see code pushes created in a github project for a given period of time.
 
+## SonarQube
  
 # Metric types
 
+## Github:: Branches
 
 | Key  | Value |
 |------|---|
@@ -31,6 +34,7 @@
 }
 ```
 
+## Github:: Push
 
 | Key  | Value |
 |------|---|
