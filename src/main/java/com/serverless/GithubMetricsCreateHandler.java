@@ -20,20 +20,27 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
         logger.error(">>>>>>>>>>>>> Add github metric: ");
 
         try {
-            // get the 'body' from input
-            JsonNode body = new ObjectMapper().readTree((String) input.get("body"));
 
-            // create the Product object for post
+            Map<String, Object> headers = (Map<String, Object>) input.get("headers");
+            String githubEvent = (String) headers.get("X-GitHub-Event");
+
+            JsonNode body = new ObjectMapper().readTree((String) input.get("body"));
             Metric metric = new Metric();
 
-            JsonNode headers = new ObjectMapper().readTree((String) input.get("headers"));
 
-            logger.info("Headers >>>>>>>>>>>> ");
-            logger.info(headers.toString());
-            logger.info("Headers >>>>>>>>>>>> END ");
 
-            metric.setMetricType("github.branch.created");
 
+            if(githubEvent.equalsIgnoreCase("push")){
+                metric.setMetricType("github.event.push.created"); // Triggered on a push to a repository branch or tag.
+            }else if(githubEvent.equalsIgnoreCase("create")){
+                    metric.setMetricType("github.event.branch.created"); // Represents a created branch or tag.
+            }else{
+                metric.setMetricType("github.event.unknown"); // catch everything else, un-tracked events
+            }
+
+            metric.setUsername(body.get("sender.login").asText());
+
+            logger.info(">>>>>>>>" + body.get("sender.login").asText());
 
             metric.save(metric);
 
@@ -41,7 +48,7 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
             return ApiGatewayResponse.builder()
                     .setStatusCode(200)
                     .setObjectBody(metric)
-                    .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & Serverless"))
+                    .setHeaders(Collections.singletonMap("X-Client", "project-dashboard-api"))
                     .build();
 
         } catch (Exception ex) {
