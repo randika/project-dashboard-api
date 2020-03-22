@@ -1,19 +1,23 @@
 # project-dashboard-api
 
-Supported Metrics
-=
-1. As a project team member, I should be able to see branches or tags created in a gitgub project for a period of time.
-2. As a project team member, I should be able to see code pushes created in a gitgub project for a period of time.
+# Supported Metrics
+
+1. As a project team member, I should be able to see branches or tags created in a github project for a period of time.
+2. As a project team member, I should be able to see code pushes created in a github project for a period of time.
 
  
-Metric types
-=
+# Metric types
 
-| Event  | Description  |
+
+| Key  | Value |
 |------|---|
-|  `github.branch.created`    | Triggered on created branch or tag. |
+| EventType |  `github.branch.created` |
+| Event Description | Triggered on created branch or tag. |
+| API endpoint | /metrics/github |
+| Data Origin | Github |
+| Data Fetched by  | Github events |
 
-
+## Model schema
 ```json
 {
   "metricId": "230bd70f-1ac5-40f0-8b64-60bb05915c0c",
@@ -27,12 +31,16 @@ Metric types
 }
 ```
 
-| Event  | Description  |
+
+| Key  | Value |
 |------|---|
-|  `github.push.created`    | Triggered on a push to a repository branch or tag |
+| EventType |  `github.push.created` |
+| Event Description | Triggered on a push to a repository branch or tag|
+| API endpoint | /metrics/github |
+| Data Origin | Github |
+| Data Fetched by  | Github events |
 
-
-
+## Model Schema
 
 ```json
 {
