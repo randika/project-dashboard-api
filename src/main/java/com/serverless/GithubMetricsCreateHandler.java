@@ -2,10 +2,8 @@ package com.serverless;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serverless.mappers.GithubPushEvent;
-import com.serverless.model.Metric;
 import com.serverless.model.MetricGithub;
 import org.apache.log4j.Logger;
 
@@ -28,22 +26,17 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
             String githubEventName = (String) headers.get("X-GitHub-Event");
 
             String body = (String) input.get("body");
-            Metric metric = new Metric();
+            MetricGithub metric = new MetricGithub();
 
             if(githubEventName.equalsIgnoreCase("push")){
                 metric.setMetricType("github.push.created"); // Triggered on a push to a repository branch or tag.
                 GithubPushEvent githubPushEvent = OBJECT_MAPPER.readValue(body, GithubPushEvent.class);
 
                 String branch = githubPushEvent.getRef();
+                metric.setBranch(branch);
 
-
-                MetricGithub metricGithub = new MetricGithub(
-                        "username",
-                        branch
-                );
+                metric.setUsername("username");
                 
-                metric.setMetricGithub(metricGithub);
-
             }else if(githubEventName.equalsIgnoreCase("create")){
                     metric.setMetricType("github.branch.created"); // Triggered on created branch or tag.
             }else{
