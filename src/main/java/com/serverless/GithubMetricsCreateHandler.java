@@ -3,6 +3,7 @@ package com.serverless;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.serverless.mappers.GithubCreateEvent;
 import com.serverless.mappers.GithubPushEvent;
 import com.serverless.model.MetricGithub;
 import org.apache.log4j.Logger;
@@ -40,7 +41,14 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
                 metric.setUsername(githubUser);
 
             }else if(githubEventName.equalsIgnoreCase("create")){
+                GithubCreateEvent githubCreateEvent = OBJECT_MAPPER.readValue(body, GithubCreateEvent.class);
                     metric.setMetricType("github.branch.created"); // Triggered on created branch or tag.
+
+                GithubCreateEvent.Sender senderData = githubCreateEvent.getSender();
+                String githubUser = senderData.getLogin();
+                metric.setUsername(githubUser);
+
+
             }else{
                 metric.setMetricType("github.uncategorized"); // catch everything else, un-tracked events
             }
