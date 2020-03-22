@@ -37,12 +37,14 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
             }else{
                 metric.setMetricType("github.event.unknown"); // catch everything else, un-tracked events
             }
-
-            metric.setUsername(body.get("sender.login").asText());
-
-            logger.info(">>>>>>>>" + body.get("sender.login").asText());
+//
+//            metric.setUsername(body.get("sender.login").asText());
+//
+//            logger.info(">>>>>>>>" + body.get("sender.login").asText());
 
             metric.save(metric);
+            
+            logger.info("metricId: " + metric.getMetricId() + " Saved successfully");
 
             // send the response back
             return ApiGatewayResponse.builder()
