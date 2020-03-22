@@ -19,13 +19,13 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
 
-        logger.error(">>>>>>>>>>>>> Add github metric: ");
+        logger.info(">>>>>>>>>>>>> Add github metric: ");
 
         try {
 
             Map<String, Object> headers = (Map<String, Object>) input.get("headers");
             String githubEventName = (String) headers.get("X-GitHub-Event");
-            
+
             String body = (String) input.get("body");
             Metric metric = new Metric();
 
@@ -36,35 +36,29 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
                 String branch = githubPushEvent.getRef();
                 logger.info("branch = " + branch);
 
-
             }else if(githubEventName.equalsIgnoreCase("create")){
                     metric.setMetricType("github.branch.created"); // Represents a created branch or tag.
             }else{
                 metric.setMetricType("github.uncategorized"); // catch everything else, un-tracked events
             }
-
-
-
             metric.save(metric);
-
             logger.info("metricId: " + metric.getMetricId() + " Saved successfully");
-
             // send the response back
             return ApiGatewayResponse.builder()
                     .setStatusCode(200)
                     .setObjectBody(metric)
-                    .setHeaders(Collections.singletonMap("X-Client", "project-dashboard-api"))
+                    .setHeaders(Collections.singletonMap("X-App", "project-dashboard-api")) // TODO: Get it from config
                     .build();
 
         } catch (Exception ex) {
-          logger.error("Error in saving metric: " + ex);
+          logger.error("E001: Error in saving metric: " + ex);
 
             // send the error response back
-            Response responseBody = new Response("Error in saving metric: ", input);
+            Response responseBody = new Response("E001: Error in saving metric: ", input);
             return ApiGatewayResponse.builder()
                     .setStatusCode(500)
                     .setObjectBody(responseBody)
-                    .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & Serverless"))
+                    .setHeaders(Collections.singletonMap("X-App", "project-dashboard-api")) // TODO: Get it from config
                     .build();
         }
     }
