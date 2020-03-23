@@ -31,24 +31,32 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
             String body = (String) input.get("body");
             MetricGithub metric = new MetricGithub();
 
+            // Using separate object mappers may seems like duplicate codes to you, but chances are
+            // github payload contracts may change, so isolation will minimize the code changes in future.
+            // hence multiple object mappers used.
+
+
             if(githubEventName.equalsIgnoreCase("push")){
 
                 GithubPushEvent githubPushEvent = OBJECT_MAPPER.readValue(body, GithubPushEvent.class);
-                metric.setMetricType("github.push.created"); // Triggered on a push to a repository branch or tag.
+                GithubPushEvent.Repository repositoryData = githubPushEvent.getRepository();
 
                 String branch = githubPushEvent.getRef();
-                metric.setBranch(branch);
-
-                GithubPushEvent.Repository repositoryData = githubPushEvent.getRepository();
                 String githubUser = repositoryData.getOwner().getName();
+
+                metric.setMetricType("github.push.created"); // Triggered on a push to a repository branch or tag.
+                metric.setBranch(branch);
                 metric.setUsername(githubUser);
 
             }else if(githubEventName.equalsIgnoreCase("create")){
                 GithubCreateEvent githubCreateEvent = OBJECT_MAPPER.readValue(body, GithubCreateEvent.class);
-                    metric.setMetricType("github.branch.created"); // Triggered on created branch or tag.
-
                 GithubCreateEvent.Sender senderData = githubCreateEvent.getSender();
+
+                String branch = githubCreateEvent.getRef();
                 String githubUser = senderData.getLogin();
+
+                metric.setMetricType("github.branch.created"); // Triggered on created branch or tag.
+                metric.setBranch(branch);
                 metric.setUsername(githubUser);
 
 
