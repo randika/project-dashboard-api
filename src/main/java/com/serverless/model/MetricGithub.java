@@ -3,13 +3,13 @@ package com.serverless.model;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import com.serverless.config.DynamoDBAdapter;
-//import org.apache.log4j.Logger;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 
 @DynamoDBTable(tableName = "PLACEHOLDER_PRODUCTS_TABLE_NAME")
 public class MetricGithub {
-   // private Logger logger = Logger.getLogger(this.getClass());
+   private Logger logger = Logger.getLogger(this.getClass());
 
 
     // get the table name from env. var. set in serverless.yml
@@ -22,7 +22,6 @@ public class MetricGithub {
 
     private String metricId;
     private String metricType;
-    private String metricValue;
     private String username;
     private String branch;
 
@@ -44,12 +43,6 @@ public class MetricGithub {
         this.metricType = metricType;
     }
 
-    public String getMetricValue() {
-        return this.metricValue;
-    }
-    public void setMetricValue(String metricValue) {
-        this.metricValue = metricValue;
-    }
 
     public String getUsername() {
         return this.username;
@@ -78,11 +71,11 @@ public class MetricGithub {
     }
 
     public String toString() {
-        return String.format("Metric [metricId=%s, metricType=%s]", this.metricId, this.metricType);
+        return String.format("Metric [metricId=%s, username=%s, branch=%s]", this.metricId, this.metricType, this.username, this.branch);
     }
 
     public void save(MetricGithub metric) throws IOException {
-        //logger.info("Metric - save(): " + metric.toString());
+        logger.info("Metric - save(): " + metric.toString());
         this.mapper.save(metric);
     }
 }

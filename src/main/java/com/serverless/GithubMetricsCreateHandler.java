@@ -19,17 +19,20 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
 
-        logger.info(">>>>>>>>>>>>> Add github metric: ");
+
 
         try {
 
             Map<String, Object> headers = (Map<String, Object>) input.get("headers");
             String githubEventName = (String) headers.get("X-GitHub-Event");
 
+            logger.info(">>>>>>>>>>>>> Add github metric for event: " + githubEventName);
+
             String body = (String) input.get("body");
             MetricGithub metric = new MetricGithub();
 
             if(githubEventName.equalsIgnoreCase("push")){
+
                 GithubPushEvent githubPushEvent = OBJECT_MAPPER.readValue(body, GithubPushEvent.class);
                 metric.setMetricType("github.push.created"); // Triggered on a push to a repository branch or tag.
 
