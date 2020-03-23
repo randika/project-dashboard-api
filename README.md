@@ -28,7 +28,7 @@
   "metricType": "github.push.created",
   "username": "randika",
   "branch": "master",
-  "appName": "project-dashboard-api",
+  "appId": "project-dashboard-api",
   "teamId": "t1",
   "teamName": "Team A"
 }
@@ -53,7 +53,7 @@
   "metricType": "github.branch.created",
   "username": "randika",
   "branch": "master",
-  "appName": "project-dashboard-api",
+  "appId": "project-dashboard-api",
   "teamId": "t1",
   "teamName": "Team A"
 }
