@@ -11,7 +11,7 @@ provider:
   profile: ${self:custom.profiles.${self:provider.stage}}
   region: us-east-1
   environment:
-    DYNAMODB_TABLE_METRICS: ${self:service}-metricsdata-${opt:stage, self:provider.stage}
+    DYNAMODB_TABLE_METRICS: ${self:service}-metrics-${opt:stage, self:provider.stage}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -58,7 +58,7 @@ resources:
                 AttributeName: metricType
                 KeyType: HASH
             Projection:
-              ProjectionType: KEYS_ONLY
+              ProjectionType: ALL
             ProvisionedThroughput:
               ReadCapacityUnits: 1
               WriteCapacityUnits: 1
