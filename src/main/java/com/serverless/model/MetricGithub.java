@@ -24,6 +24,7 @@ public class MetricGithub {
     private String metricType;
     private String username;
     private String branch;
+    private String projectName;
 
 
 
@@ -56,6 +57,13 @@ public class MetricGithub {
     }
     public void setBranch(String branch) {
         this.branch = branch;
+    }
+
+    public String getProjectName() {
+        return this.projectName;
+    }
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
     public MetricGithub() {

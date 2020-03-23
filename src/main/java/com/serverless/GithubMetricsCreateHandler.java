@@ -43,22 +43,26 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
 
                 String branch = githubPushEvent.getRef();
                 String githubUser = repositoryData.getOwner().getName();
+                String repositoryName = repositoryData.getName();
 
                 metric.setMetricType("github.push.created"); // Triggered on a push to a repository branch or tag.
                 metric.setBranch(branch);
                 metric.setUsername(githubUser);
+                metric.setProjectName(repositoryName);
 
             }else if(githubEventName.equalsIgnoreCase("create")){
                 GithubCreateEvent githubCreateEvent = OBJECT_MAPPER.readValue(body, GithubCreateEvent.class);
                 GithubCreateEvent.Sender senderData = githubCreateEvent.getSender();
+                GithubCreateEvent.Repository repositoryData = githubCreateEvent.getRepository();
 
                 String branch = githubCreateEvent.getRef();
                 String githubUser = senderData.getLogin();
+                String repositoryName = repositoryData.getName();
 
                 metric.setMetricType("github.branch.created"); // Triggered on created branch or tag.
                 metric.setBranch(branch);
                 metric.setUsername(githubUser);
-
+                metric.setProjectName(repositoryName);
 
             }else{
                 metric.setMetricType("github.uncategorized"); // catch everything else, un-tracked events
