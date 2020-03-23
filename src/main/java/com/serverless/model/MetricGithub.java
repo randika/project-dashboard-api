@@ -21,6 +21,7 @@ public class MetricGithub {
 
     private String metricId;
     private String metricType;
+    private Long createdAt;
     private String username;
     private String branch;
     private String projectName;
@@ -77,6 +78,14 @@ public class MetricGithub {
     }
     public void setTeamId(String teamId) {
         this.teamId = teamId;
+    }
+
+    public Long getCreatedAt(){
+        return this.createdAt;
+    }
+
+    public void setCreatedAt(long createdAt){
+        this.createdAt = createdAt;
     }
 
     public MetricGithub() {
