@@ -52,8 +52,9 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
 
             }else if(githubEventName.equalsIgnoreCase("create")){
                 GithubCreateEvent githubCreateEvent = OBJECT_MAPPER.readValue(body, GithubCreateEvent.class);
-                GithubCreateEvent.Sender senderData = githubCreateEvent.getSender();
                 GithubCreateEvent.Repository repositoryData = githubCreateEvent.getRepository();
+                GithubCreateEvent.Sender senderData = githubCreateEvent.getSender();
+
 
                 String branch = githubCreateEvent.getRef();
                 String githubUser = senderData.getLogin();
