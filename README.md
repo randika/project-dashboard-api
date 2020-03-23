@@ -26,11 +26,11 @@
   "metricId": "230bd70f-1ac5-40f0-8b64-60bb05915c0c",
   "createdAt": "timestamp",
   "metricType": "github.push.created",
-  "metadata": {
-    "username": "randika",
-    "branch": "master",
-    "project": "project-dashboard-api"
-  }
+  "username": "randika",
+  "branch": "master",
+  "appId": "project-dashboard-api",
+  "teamId": "t1",
+  "teamName": "Team A"
 }
 ```
 
@@ -51,11 +51,11 @@
   "metricId": "230bd70f-1ac5-40f0-8b64-60bb05915c0c",
   "createdAt": "timestamp",
   "metricType": "github.branch.created",
-  "metadata": {
-    "username": "randika",
-    "branch": "master",
-    "project": "project-dashboard-api"
-  }
+  "username": "randika",
+  "branch": "master",
+  "appId": "project-dashboard-api",
+  "teamId": "t1",
+  "teamName": "Team A"
 }
 ```
 

@@ -8,6 +8,7 @@ import com.serverless.mappers.GithubPushEvent;
 import com.serverless.model.MetricGithub;
 import org.apache.log4j.Logger;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.Map;
 
@@ -22,6 +23,9 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
 
 
         try {
+
+            long unixTimestamp = Instant.now().getEpochSecond();
+
 
             Map<String, Object> headers = (Map<String, Object>) input.get("headers");
             String githubEventName = (String) headers.get("X-GitHub-Event");
@@ -43,22 +47,33 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
 
                 String branch = githubPushEvent.getRef();
                 String githubUser = repositoryData.getOwner().getName();
+                String repositoryName = repositoryData.getName();
 
                 metric.setMetricType("github.push.created"); // Triggered on a push to a repository branch or tag.
                 metric.setBranch(branch);
                 metric.setUsername(githubUser);
+                metric.setProjectName(repositoryName);
+                metric.setAppId("appId1");
+                metric.setTeamId("team1");
+                metric.setCreatedAt(unixTimestamp);
 
             }else if(githubEventName.equalsIgnoreCase("create")){
                 GithubCreateEvent githubCreateEvent = OBJECT_MAPPER.readValue(body, GithubCreateEvent.class);
+                GithubCreateEvent.Repository repositoryData = githubCreateEvent.getRepository();
                 GithubCreateEvent.Sender senderData = githubCreateEvent.getSender();
+
 
                 String branch = githubCreateEvent.getRef();
                 String githubUser = senderData.getLogin();
+                String repositoryName = repositoryData.getName();
 
                 metric.setMetricType("github.branch.created"); // Triggered on created branch or tag.
                 metric.setBranch(branch);
                 metric.setUsername(githubUser);
-
+                metric.setProjectName(repositoryName);
+                metric.setAppId("appId1");
+                metric.setTeamId("team1");
+                metric.setCreatedAt(unixTimestamp);
 
             }else{
                 metric.setMetricType("github.uncategorized"); // catch everything else, un-tracked events
