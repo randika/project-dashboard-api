@@ -49,6 +49,8 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
                 metric.setBranch(branch);
                 metric.setUsername(githubUser);
                 metric.setProjectName(repositoryName);
+                metric.setAppId("appId1");
+                metric.setTeamId("team1");
 
             }else if(githubEventName.equalsIgnoreCase("create")){
                 GithubCreateEvent githubCreateEvent = OBJECT_MAPPER.readValue(body, GithubCreateEvent.class);
@@ -64,6 +66,8 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
                 metric.setBranch(branch);
                 metric.setUsername(githubUser);
                 metric.setProjectName(repositoryName);
+                metric.setAppId("appId1");
+                metric.setTeamId("team1");
 
             }else{
                 metric.setMetricType("github.uncategorized"); // catch everything else, un-tracked events
