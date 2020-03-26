@@ -7,7 +7,7 @@
 2. As a project team member, I should be able to see code pushes created in a github project for a given period of time.
 
 ## SonarQube
- 
+1. Analysis 
 # Metric types
 
 ## Github:: Branches
