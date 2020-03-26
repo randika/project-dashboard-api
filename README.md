@@ -58,5 +58,3 @@
   "teamName": "Team A"
 }
 ```
-
-TEST
