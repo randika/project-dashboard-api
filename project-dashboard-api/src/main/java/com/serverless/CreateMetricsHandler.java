@@ -5,7 +5,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.serverless.model.Metric;
+import com.serverless.model.MetricGithub;
 import org.apache.log4j.Logger;
 import java.util.Collections;
 import java.util.Map;
@@ -24,7 +24,7 @@ public class CreateMetricsHandler implements RequestHandler<Map<String, Object>,
             JsonNode body = new ObjectMapper().readTree((String) input.get("body"));
 
             // create the Product object for post
-            Metric metric = new Metric();
+            MetricGithub metric = new MetricGithub();
             // product.setId(body.get("id").asText());
             metric.setMetricType(body.get("metricType").asText());
             metric.save(metric);
