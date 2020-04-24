@@ -92,3 +92,10 @@ functions:
           path: /metrics/github
           method: post
           cors: true
+  projectsCreate:
+    handler: com.serverless.ProjectsCreateHandler
+    events:
+      - http:
+          path: /projects
+          method: post
+          cors: true
