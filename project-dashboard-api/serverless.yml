@@ -12,6 +12,7 @@ provider:
   region: us-east-1
   environment:
     DYNAMODB_TABLE_METRICS: ${self:service}-metrics-${opt:stage, self:provider.stage}
+    DYNAMODB_TABLE_PROJECTS: ${self:service}-projects-${opt:stage, self:provider.stage}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -22,25 +23,71 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE_METRICS}"
+      Resource: [
+        "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE_METRICS}",
+        "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE_PROJECTS}"
+      ]
 resources:
   Resources:
     DynamoDbTableMetrics:
       Type: 'AWS::DynamoDB::Table'
       DeletionPolicy: Retain
       Properties:
+        TableName: ${self:provider.environment.DYNAMODB_TABLE_METRICS}
         AttributeDefinitions:
           -
             AttributeName: metricId
             AttributeType: S
+          -
+            AttributeName: metricType
+            AttributeType: S
+          -
+            AttributeName: createdAt
+            AttributeType: N
         KeySchema:
           -
             AttributeName: metricId
             KeyType: HASH
+          -
+            AttributeName: createdAt
+            KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-        TableName: ${self:provider.environment.DYNAMODB_TABLE_METRICS}
+        GlobalSecondaryIndexes:
+          -
+            IndexName: metricTypeIndex
+            KeySchema:
+              -
+                AttributeName: metricType
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+    DynamoDbTableProjects:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        TableName: ${self:provider.environment.DYNAMODB_TABLE_PROJECTS}
+        AttributeDefinitions:
+          -
+            AttributeName: projectId
+            AttributeType: S
+          -
+            AttributeName: createdAt
+            AttributeType: N
+        KeySchema:
+          -
+            AttributeName: projectId
+            KeyType: HASH
+          -
+            AttributeName: createdAt
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
 custom:
   defaultStage: dev
   profiles:
@@ -62,5 +109,19 @@ functions:
     events:
       - http:
           path: /metrics
+          method: post
+          cors: true
+  githubMetricsCreate:
+    handler: com.serverless.GithubMetricsCreateHandler
+    events:
+      - http:
+          path: /metrics/github
+          method: post
+          cors: true
+  projectsCreate:
+    handler: com.serverless.ProjectsCreateHandler
+    events:
+      - http:
+          path: /projects
           method: post
           cors: true
