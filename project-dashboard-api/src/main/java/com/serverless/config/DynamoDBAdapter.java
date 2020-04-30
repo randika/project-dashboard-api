@@ -14,6 +14,7 @@ public class DynamoDBAdapter {
 
     private DynamoDBAdapter() {
         // create the client
+    	// to run locally .withEndpointConfiguration(new EndpointConfiguration("http://localhost:8000", "us-east-1"))
         this.client = AmazonDynamoDBClientBuilder.standard()
                 .withRegion(Regions.US_EAST_1)
                 .build();
