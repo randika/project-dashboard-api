@@ -12,7 +12,7 @@ provider:
   region: us-east-1
   environment:
     DYNAMODB_TABLE_METRICS: ${self:service}-metrics-${opt:stage, self:provider.stage}
-	DYNAMODB_TABLE_PROJECTS: ${self:service}-projects-${opt:stage, self:provider.stage}
+    DYNAMODB_TABLE_PROJECTS: ${self:service}-projects-${opt:stage, self:provider.stage}
 iamRoleStatements:
     - Effect: Allow
       Action:
@@ -24,9 +24,9 @@ iamRoleStatements:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource: [
-			"arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE_METRICS}",
-			"arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE_PROJECTS}"
-		]
+      "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE_METRICS}",
+      "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE_PROJECTS}"
+      ]
 resources:
   Resources:
     DynamoDbTableMetrics:
@@ -66,7 +66,7 @@ resources:
             ProvisionedThroughput:
               ReadCapacityUnits: 1
               WriteCapacityUnits: 1
-	DynamoDbTableProjects:
+    DynamoDbTableProjects:
       Type: 'AWS::DynamoDB::Table'
       DeletionPolicy: Retain
       Properties:
