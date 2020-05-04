@@ -128,14 +128,14 @@ functions:
     handler: com.serverless.projects.DeleteHandler
     events:
       - http:
-          path: /project/{id}
+          path: /projects/{id}
           method: delete
           cors: true
   projectGet:
     handler: com.serverless.projects.GetHandler
     events:
       - http:
-          path: /project/{id}
+          path: /projects/{id}
           method: get
           cors: true
   projectListGet:
