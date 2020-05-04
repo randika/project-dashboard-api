@@ -1,13 +1,15 @@
-package com.serverless;
+package com.serverless.projects;
 
 import java.util.Collections;
 import java.util.Map;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.serverless.ApiGatewayResponse;
+import com.serverless.Response;
 import com.serverless.model.Project;
 
-public class DeleteProjectHandler implements RequestHandler<Map<String, Object>, ApiGatewayResponse>{
+public class DeleteHandler implements RequestHandler<Map<String, Object>, ApiGatewayResponse>{
 	@Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         try {

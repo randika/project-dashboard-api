@@ -118,28 +118,28 @@ functions:
           method: post
           cors: true
   projectsCreate:
-    handler: com.serverless.CreateProjectHandler
+    handler: com.serverless.projects.CreateHandler
     events:
       - http:
           path: /project
           method: post
           cors: true
   projectDelete:
-    handler: com.serverless.DeleteProjectHandler
+    handler: com.serverless.projects.DeleteHandler
     events:
       - http:
           path: /project/{id}
           method: delete
           cors: true
   projectGet:
-    handler: com.serverless.GetProjectHandler
+    handler: com.serverless.projects.GetHandler
     events:
       - http:
           path: /project/{id}
           method: get
           cors: true
   projectListGet:
-    handler: com.serverless.GetProjectListHandler
+    handler: com.serverless.projects.GetListHandler
     events:
       - http:
           path: /projects
