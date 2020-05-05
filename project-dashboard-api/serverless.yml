@@ -1,4 +1,4 @@
-service: project-dashboard # NOTE: update this with your service name
+service:  project-dashboard-api # NOTE: update this with your service name
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
@@ -24,8 +24,8 @@ iamRoleStatements:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource: [
-      "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE_METRICS}",
-      "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE_PROJECTS}"
+        "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE_METRICS}",
+        "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE_PROJECTS}"
       ]
 resources:
   Resources:

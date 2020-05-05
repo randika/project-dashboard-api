@@ -3,7 +3,7 @@
 
 
   <groupId>com.serverless</groupId>
-  <artifactId>project-dashboard</artifactId>
+  <artifactId>project-dashboard-api</artifactId>
   <packaging>jar</packaging>
   <version>dev</version>
   <name>project-dashboard</name>
