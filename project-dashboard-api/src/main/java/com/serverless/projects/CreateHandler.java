@@ -7,8 +7,11 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.serverless.ApiGatewayResponse;
 import com.serverless.Response;
 import com.serverless.model.Project;
+import org.apache.log4j.Logger;
 
 public class CreateHandler implements RequestHandler<Map<String, Object>, ApiGatewayResponse>{
+
+    private final Logger logger = Logger.getLogger(this.getClass());
 
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
@@ -29,7 +32,8 @@ public class CreateHandler implements RequestHandler<Map<String, Object>, ApiGat
                     .build();
 
         } catch (Exception ex) {
-//          logger.error("Error in saving the project: " + ex);
+
+            logger.error("E002: Error in saving the project: " + ex);
 
             // send the error response back
             Response responseBody = new Response("Error in saving the project: ", input);

@@ -70,7 +70,7 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
                 metric.setUsername(githubUser);
                 metric.setProjectName(repositoryName);
                 metric.setAppId("appId1");
-                metric.setTeamId("team1");
+                metric.setTeamId("team0");
                 metric.setCreatedAt(unixTimestamp);
 
             }else{
