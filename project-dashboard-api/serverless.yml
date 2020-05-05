@@ -13,7 +13,7 @@ provider:
   environment:
     DYNAMODB_TABLE_METRICS: ${self:service}-metrics-${opt:stage, self:provider.stage}
     DYNAMODB_TABLE_PROJECTS: ${self:service}-projects-${opt:stage, self:provider.stage}
-iamRoleStatements:
+  iamRoleStatements:
     - Effect: Allow
       Action:
         - dynamodb:DescribeTable
@@ -25,18 +25,9 @@ iamRoleStatements:
         - dynamodb:DeleteItem
       Resource: [
         "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE_METRICS}",
-        "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE_METRICS}/index/*"
+        "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE_METRICS}/index/*",
+        "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE_PROJECTS}"
       ]
-    - Effect: Allow
-      Action:
-        - dynamodb:DescribeTable
-        - dynamodb:Query
-        - dynamodb:Scan
-        - dynamodb:GetItem
-        - dynamodb:PutItem
-        - dynamodb:UpdateItem
-        - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE_PROJECTS}"
 resources:
   Resources:
     DynamoDbTableMetrics:
