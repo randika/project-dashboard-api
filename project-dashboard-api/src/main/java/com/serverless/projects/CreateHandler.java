@@ -1,5 +1,6 @@
 package com.serverless.projects;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.Map;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
@@ -26,6 +27,7 @@ public class CreateHandler implements RequestHandler<Map<String, Object>, ApiGat
 //            project.setTeamName(input.get("teamName").toString());
 //            project.save(project);
 
+            long unixTimestamp = Instant.now().getEpochSecond();
             // get the 'body' from input
             JsonNode body = new ObjectMapper().readTree((String) input.get("body"));
 
@@ -35,6 +37,7 @@ public class CreateHandler implements RequestHandler<Map<String, Object>, ApiGat
             project.setProjectName(body.get("projectName").asText());
             project.setTeamId(body.get("teamId").asText());
             project.setTeamName(body.get("teamName").asText());
+            project.setCreatedAt(unixTimestamp);
             project.save(project);
 
             // send the response back
