@@ -12,7 +12,7 @@ import com.serverless.model.Project;
 import org.apache.log4j.Logger;
 
 public class CreateHandler implements RequestHandler<Map<String, Object>, ApiGatewayResponse>{
-    
+
     private final Logger logger = Logger.getLogger(this.getClass());
 
     @Override
@@ -31,7 +31,7 @@ public class CreateHandler implements RequestHandler<Map<String, Object>, ApiGat
 
             // create the Project object
             Project project = new Project();
-            project.setProjectId(body.get("projectId").asText());
+            //project.setProjectId(body.get("projectId").asText());
             project.setProjectName(body.get("projectName").asText());
             project.setTeamId(body.get("teamId").asText());
             project.setTeamName(body.get("teamName").asText());
