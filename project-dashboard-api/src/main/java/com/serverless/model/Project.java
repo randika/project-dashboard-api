@@ -60,6 +60,8 @@ public class Project {
 		this.teamId = teamId;
 	}
 
+//	@DynamoDBTypeConverted(converter = ObjectConverter.class)
+//	@DynamoDBRangeKey(attributeName="createdAt")
 	public Long getCreatedAt() {
 		return this.createdAt;
 	}
@@ -67,6 +69,8 @@ public class Project {
 	public void setCreatedAt(long createdAt) {
 		this.createdAt = createdAt;
 	}
+
+
 
 	public Project() {
 		DynamoDBMapperConfig mapperConfig = DynamoDBMapperConfig.builder()
@@ -134,6 +138,13 @@ public class Project {
 		DynamoDBScanExpression scanExp = new DynamoDBScanExpression();
 		List<Project> results = this.mapper.scan(Project.class, scanExp);
 		return results;
+
+//		DynamoDBQueryExpression<Project> dynamoDBQueryExpression = new DynamoDBQueryExpression<Project>()
+//				.withConsistentRead(false);
+//
+//		List<Project> projects = this.mapper.query(Project.class, dynamoDBQueryExpression);
+//		return projects;
+
 	}
 
 	/**
