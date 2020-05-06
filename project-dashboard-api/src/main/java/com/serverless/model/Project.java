@@ -1,6 +1,7 @@
 package com.serverless.model;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.serverless.config.DynamoDBAdapter;
 
-@DynamoDBTable(tableName = "PLACEHOLDER_PRODUCTS_TABLE_NAME")
+@DynamoDBTable(tableName = "DYNAMODB_TABLE_PROJECTS")
 public class Project {
 	private Logger logger = Logger.getLogger(this.getClass());
 	private static final String DYNAMODB_TABLE_PROJECTS = System.getenv("DYNAMODB_TABLE_PROJECTS");
@@ -22,7 +23,7 @@ public class Project {
 
 	private String projectId;
 	private String projectName;
-	private Long createdAt;
+	private Date createdAt;
 	private String teamId;
 	private String teamName;
 
@@ -60,13 +61,11 @@ public class Project {
 		this.teamId = teamId;
 	}
 
-//	@DynamoDBTypeConverted(converter = ObjectConverter.class)
-//	@DynamoDBRangeKey(attributeName="createdAt")
-	public Long getCreatedAt() {
+	public Date getCreatedAt() {
 		return this.createdAt;
 	}
 
-	public void setCreatedAt(long createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
