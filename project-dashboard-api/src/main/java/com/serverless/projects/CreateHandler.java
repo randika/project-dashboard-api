@@ -23,9 +23,9 @@ public class CreateHandler implements RequestHandler<Map<String, Object>, ApiGat
         	// create the Project object
             Project project = new Project();
             JsonNode body = new ObjectMapper().readTree((String) input.get("body"));
-            project.setProjectName(body.get("projectName").toString());
-            project.setTeamId(body.get("teamId").toString());
-            project.setTeamName(body.get("teamName").toString());
+            project.setProjectName(body.get("projectName").asText());
+            project.setTeamId(body.get("teamId").asText());
+            project.setTeamName(body.get("teamName").asText());
             project.setCreatedAt(Date.from(Instant.now()));
             project.save(project);
 
