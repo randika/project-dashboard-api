@@ -13,9 +13,10 @@ import com.serverless.Response;
 import com.serverless.model.Project;
 
 public class GetListHandler implements RequestHandler<Map<String, Object>, ApiGatewayResponse>{
-	private Logger logger = Logger.getLogger(this.getClass());
 
-	public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
+	private final Logger logger = Logger.getLogger(this.getClass());
+
+    public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
     	try {
             List<Project> projects = new Project().list();
          
@@ -29,6 +30,7 @@ public class GetListHandler implements RequestHandler<Map<String, Object>, ApiGa
       			logger.error("E002: Error in fetching the projects list: " + ex);
 
       			Response responseBody = new Response("Error in fetching projects list: ", input);
+
       			return ApiGatewayResponse.builder()
       					.setStatusCode(500)
       					.setObjectBody(responseBody)

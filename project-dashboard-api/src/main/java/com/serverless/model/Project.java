@@ -69,6 +69,8 @@ public class Project {
 		this.createdAt = createdAt;
 	}
 
+
+
 	public Project() {
 		DynamoDBMapperConfig mapperConfig = DynamoDBMapperConfig.builder()
 				.withTableNameOverride(new DynamoDBMapperConfig.TableNameOverride(DYNAMODB_TABLE_PROJECTS)).build();
@@ -135,6 +137,13 @@ public class Project {
 		DynamoDBScanExpression scanExp = new DynamoDBScanExpression();
 		List<Project> results = this.mapper.scan(Project.class, scanExp);
 		return results;
+
+//		DynamoDBQueryExpression<Project> dynamoDBQueryExpression = new DynamoDBQueryExpression<Project>()
+//				.withConsistentRead(false);
+//
+//		List<Project> projects = this.mapper.query(Project.class, dynamoDBQueryExpression);
+//		return projects;
+
 	}
 
 	/**
