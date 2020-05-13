@@ -139,6 +139,13 @@ functions:
           path: /projects/{id}
           method: get
           cors: true
+  projectsUpdate:
+    handler: com.serverless.projects.UpdateHandler
+    events:
+      - http:
+          path: /projects
+          method: put
+          cors: true
   projectsListGet:
     handler: com.serverless.projects.GetListHandler
     events:

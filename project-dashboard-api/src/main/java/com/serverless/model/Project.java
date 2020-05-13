@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
+
 import org.apache.log4j.Logger;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
@@ -61,6 +62,7 @@ public class Project {
 		this.teamId = teamId;
 	}
 
+	@DynamoDBRangeKey(attributeName = "createdAt")
 	public Date getCreatedAt() {
 		return this.createdAt;
 	}
@@ -94,7 +96,6 @@ public class Project {
 
         HashMap<String, AttributeValue> av = new HashMap<String, AttributeValue>();
         av.put(":v1", new AttributeValue().withS(id));
-
         DynamoDBQueryExpression<Project> queryExp = new DynamoDBQueryExpression<Project>()
             .withKeyConditionExpression("projectId = :v1")
             .withExpressionAttributeValues(av);
