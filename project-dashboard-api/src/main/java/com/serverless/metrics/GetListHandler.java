@@ -4,6 +4,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.serverless.ApiGatewayResponse;
 import com.serverless.Response;
+import com.serverless.model.MetricGithub;
 import com.serverless.model.Project;
 import org.apache.log4j.Logger;
 
@@ -17,16 +18,16 @@ public class GetListHandler implements RequestHandler<Map<String, Object>, ApiGa
 
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         try {
-            List<Project> projects = new Project().list();
+            List<MetricGithub> metrics = new MetricGithub().list();
 
             return ApiGatewayResponse.builder()
                     .setStatusCode(200)
-                    .setObjectBody(projects)
+                    .setObjectBody(metrics)
                     .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & Serverless"))
                     .build();
         } catch (Exception ex) {
 
-            logger.error("E002: Error in fetching the metrics list: " + ex);
+            logger.error("E004: Error in fetching the metrics list: " + ex);
 
             Response responseBody = new Response("Error in fetching metrics list: ", input);
 
