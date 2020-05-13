@@ -26,7 +26,8 @@ public class GetListHandler implements RequestHandler<Map<String, Object>, ApiGa
             headers.put("Access-Control-Allow-Origin", "*");
             headers.put("Access-Control-Allow-Headers", "*");
             headers.put("Access-Control-Allow-Methods", "OPTIONS,POST,GET");
-         
+
+            
             return ApiGatewayResponse.builder()
         				.setStatusCode(200)
         				.setObjectBody(projects)
