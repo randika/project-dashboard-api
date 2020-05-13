@@ -25,7 +25,7 @@ public class GetHandler implements RequestHandler<Map<String, Object>, ApiGatewa
             if (project != null) {
               return ApiGatewayResponse.builder()
           				.setStatusCode(200)
-          				.setObjectBody(project.getProjectId())
+          				.setObjectBody(project)
           				.setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & Serverless"))
           				.build();
             } else {
@@ -39,7 +39,7 @@ public class GetHandler implements RequestHandler<Map<String, Object>, ApiGatewa
       		Response responseBody = new Response("Error in fetching the project: ", input);
             
       		logger.error("E002: Error in saving the project: " + ex);
-
+    
       		return ApiGatewayResponse.builder()
       					.setStatusCode(500)
       					.setObjectBody(responseBody)
