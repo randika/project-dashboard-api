@@ -18,7 +18,19 @@ public class GetListHandler implements RequestHandler<Map<String, Object>, ApiGa
 
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         try {
-            List<MetricGithub> metrics = new MetricGithub().list();
+            Map<String,String> queryStringParameters =  (Map<String,String>)input.get("queryStringParameters");
+
+            String projectId = queryStringParameters.get("projectId");
+            String metricType = queryStringParameters.get("metricType");
+            List<MetricGithub> metrics = null;
+
+            if(metricType.isEmpty()){
+                logger.info(">>>>>>>>>>>>>>>> list:all");
+                metrics = new MetricGithub().list();
+            }else{
+                logger.info(">>>>>>>>>>>>>>>> listByMetricsType:"+ metricType);
+                metrics = new MetricGithub().listByMetricsType(metricType);
+            }
 
             return ApiGatewayResponse.builder()
                     .setStatusCode(200)
