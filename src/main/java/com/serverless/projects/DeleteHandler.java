@@ -1,6 +1,7 @@
 package com.serverless.projects;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -21,11 +22,17 @@ public class DeleteHandler implements RequestHandler<Map<String, Object>, ApiGat
             String projectId = pathParameters.get("id");
 
             Boolean success = new Project().delete(projectId);
+            
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Content-Type", "application/json");
+            headers.put("Access-Control-Allow-Origin", "*");
+            headers.put("Access-Control-Allow-Headers", "*");
+            headers.put("Access-Control-Allow-Methods", "OPTIONS,POST,GET,DELETE");
 
             if (success) {
               return ApiGatewayResponse.builder()
           				.setStatusCode(204)
-          				.setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & Serverless"))
+          				.setHeaders(headers)
           				.build();
             } else {
               return ApiGatewayResponse.builder()

@@ -1,6 +1,7 @@
 package com.serverless.projects;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -22,11 +23,17 @@ public class GetHandler implements RequestHandler<Map<String, Object>, ApiGatewa
 
             Project project = new Project().get(projectId);
 
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Content-Type", "application/json");
+            headers.put("Access-Control-Allow-Origin", "*");
+            headers.put("Access-Control-Allow-Headers", "*");
+            headers.put("Access-Control-Allow-Methods", "OPTIONS,POST,GET");
+            
             if (project != null) {
               return ApiGatewayResponse.builder()
           				.setStatusCode(200)
           				.setObjectBody(project)
-          				.setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & Serverless"))
+          				.setHeaders(headers)
           				.build();
             } else {
               return ApiGatewayResponse.builder()
