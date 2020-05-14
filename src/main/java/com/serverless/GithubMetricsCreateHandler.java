@@ -56,7 +56,7 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
                 metric.setTeamId("team1");
                 metric.setCreatedAt(Date.from(Instant.now()));
 
-            }else if(githubEventName.equalsIgnoreCase("create")){
+            }else if(githubEventName.equalsIgnoreCase("pull_request")){
                 GithubCreateEvent githubCreateEvent = OBJECT_MAPPER.readValue(body, GithubCreateEvent.class);
                 GithubCreateEvent.Repository repositoryData = githubCreateEvent.getRepository();
                 GithubCreateEvent.Sender senderData = githubCreateEvent.getSender();
@@ -66,7 +66,7 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
                 String githubUser = senderData.getLogin();
                 String repositoryName = repositoryData.getName();
 
-                metric.setMetricType("github.branch.created"); // Triggered on created branch or tag.
+                metric.setMetricType("github.pull_request.created"); // Triggered on created branch or tag.
                 metric.setBranch(branch);
                 metric.setUsername(githubUser);
                 metric.setProjectName(repositoryName);
