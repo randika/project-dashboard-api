@@ -2,12 +2,15 @@ package com.serverless.model;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.serverless.config.DynamoDBAdapter;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @DynamoDBTable(tableName = "PLACEHOLDER_PRODUCTS_TABLE_NAME")
 public class MetricGithub {
@@ -122,5 +125,24 @@ public class MetricGithub {
         List<MetricGithub> results = this.mapper.scan(MetricGithub.class, scanExp);
         return results;
 
+    }
+
+    public List<MetricGithub> listByMetricsType(String metricType) throws IOException {
+
+
+        Map<String, String> expressionAttributesNames = new HashMap<>();
+        expressionAttributesNames.put("#metricType", "metricType");
+
+        Map<String, AttributeValue> expressionAttributeValues = new HashMap<>();
+        expressionAttributeValues.put(":metricType", new AttributeValue().withS(metricType));
+
+        DynamoDBQueryExpression<MetricGithub> dynamoDBQueryExpression = new DynamoDBQueryExpression<MetricGithub>()
+                .withIndexName("metricTypeIndex").withKeyConditionExpression("#metricType = :metricType")
+                .withExpressionAttributeNames(expressionAttributesNames)
+                .withExpressionAttributeValues(expressionAttributeValues).withScanIndexForward(true)
+                .withConsistentRead(false);
+
+        List<MetricGithub> metrics = mapper.query(MetricGithub.class, dynamoDBQueryExpression);
+        return metrics;
     }
 }
