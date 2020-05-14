@@ -44,7 +44,7 @@ resources:
             AttributeType: S
           -
             AttributeName: createdAt
-            AttributeType: N
+            AttributeType: S
         KeySchema:
           -
             AttributeName: metricId
