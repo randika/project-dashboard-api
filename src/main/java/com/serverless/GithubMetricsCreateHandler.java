@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import java.time.Instant;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Map;
 
 public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
@@ -22,7 +23,7 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
 
         try {
 
-            long unixTimestamp = Instant.now().getEpochSecond();
+
 
 
             Map<String, Object> headers = (Map<String, Object>) input.get("headers");
@@ -53,7 +54,7 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
                 metric.setProjectName(repositoryName);
                 metric.setAppId("appId1");
                 metric.setTeamId("team1");
-                metric.setCreatedAt(unixTimestamp);
+                metric.setCreatedAt(Date.from(Instant.now()));
 
             }else if(githubEventName.equalsIgnoreCase("create")){
                 GithubCreateEvent githubCreateEvent = OBJECT_MAPPER.readValue(body, GithubCreateEvent.class);
@@ -71,7 +72,7 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
                 metric.setProjectName(repositoryName);
                 metric.setAppId("appId1");
                 metric.setTeamId("team0");
-                metric.setCreatedAt(unixTimestamp);
+                metric.setCreatedAt(Date.from(Instant.now()));
 
             }else{
                 metric.setMetricType("github.uncategorized"); // catch everything else, un-tracked events

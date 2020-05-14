@@ -6,6 +6,7 @@ import com.serverless.config.DynamoDBAdapter;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 @DynamoDBTable(tableName = "PLACEHOLDER_PRODUCTS_TABLE_NAME")
@@ -22,7 +23,7 @@ public class MetricGithub {
 
     private String metricId;
     private String metricType;
-    private Long createdAt;
+    private Date createdAt;
     private String username;
     private String branch;
     private String projectName;
@@ -81,11 +82,12 @@ public class MetricGithub {
         this.teamId = teamId;
     }
 
-    public Long getCreatedAt(){
+    @DynamoDBRangeKey(attributeName = "createdAt")
+    public Date getCreatedAt(){
         return this.createdAt;
     }
 
-    public void setCreatedAt(long createdAt){
+    public void setCreatedAt(Date createdAt){
         this.createdAt = createdAt;
     }
 
