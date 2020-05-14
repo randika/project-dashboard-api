@@ -1,6 +1,7 @@
 package com.serverless.projects;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,11 +20,17 @@ public class GetListHandler implements RequestHandler<Map<String, Object>, ApiGa
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
     	try {
             List<Project> projects = new Project().list();
-         
+            
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Content-Type", "application/json");
+            headers.put("Access-Control-Allow-Origin", "*");
+            headers.put("Access-Control-Allow-Headers", "*");
+            headers.put("Access-Control-Allow-Methods", "OPTIONS,POST,GET");
+            
             return ApiGatewayResponse.builder()
         				.setStatusCode(200)
         				.setObjectBody(projects)
-        				.setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & Serverless"))
+        				.setHeaders(headers)
         				.build();
         } catch (Exception ex) {
         	
@@ -34,7 +41,8 @@ public class GetListHandler implements RequestHandler<Map<String, Object>, ApiGa
       			return ApiGatewayResponse.builder()
       					.setStatusCode(500)
       					.setObjectBody(responseBody)
-      					.setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & Serverless"))
+      					.setHeaders(Collections.singletonMap("Content-Type: application/json",
+      							"Access-Control-Allow-Origin: *"))
       					.build();
         }
     }

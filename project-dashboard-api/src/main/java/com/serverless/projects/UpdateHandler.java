@@ -1,6 +1,7 @@
 package com.serverless.projects;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -26,12 +27,19 @@ public class UpdateHandler implements RequestHandler<Map<String, Object>, ApiGat
             project.setTeamId(body.get("teamId").asText());
             project.setTeamName(body.get("teamName").asText());
             project.save(project);
+            
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Content-Type", "application/json");
+            headers.put("Access-Control-Allow-Origin", "*");
+            headers.put("Access-Control-Allow-Headers", "*");
+            headers.put("Access-Control-Allow-Methods", "OPTIONS,POST,GET,DELETE,PUT");
+
 
             // send the response back
             return ApiGatewayResponse.builder()
                     .setStatusCode(201)
                     .setObjectBody(project)
-                    .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & Serverless"))
+                    .setHeaders(headers)
                     .build();
 
         } catch (Exception ex) {
