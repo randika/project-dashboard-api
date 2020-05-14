@@ -6,6 +6,7 @@ import com.serverless.config.DynamoDBAdapter;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.util.List;
 
 @DynamoDBTable(tableName = "PLACEHOLDER_PRODUCTS_TABLE_NAME")
 public class MetricGithub {
@@ -107,5 +108,17 @@ public class MetricGithub {
     public void save(MetricGithub metric) throws IOException {
         logger.info("Metric - save(): " + metric.toString());
         this.mapper.save(metric);
+    }
+
+    /**
+     * get the list of metrics - github
+     * @return
+     * @throws IOException
+     */
+    public List<MetricGithub> list() throws IOException {
+        DynamoDBScanExpression scanExp = new DynamoDBScanExpression();
+        List<MetricGithub> results = this.mapper.scan(MetricGithub.class, scanExp);
+        return results;
+
     }
 }
