@@ -160,3 +160,10 @@ functions:
           path: /metrics
           method: get
           cors: true
+  webhooksSonarMetrics:
+    handler: com.serverless.webhooks.SonarMetricsHandler
+    events:
+      - http:
+          path: /webhooks/sonar
+          method: post
+          cors: true
