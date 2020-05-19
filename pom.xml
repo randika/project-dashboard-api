@@ -15,7 +15,7 @@
     <sonar.projectKey>randika_project-dashboard-api</sonar.projectKey>
     <sonar.organization>randika</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-    <sonar.login>d19f25f6f332195950f55a08f04480c88fbd291c</sonar.login>
+    <sonar.login>8bd6b337476271c275a0e401b8aea3143687cf0d</sonar.login>
   </properties>
 
 
