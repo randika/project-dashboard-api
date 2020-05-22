@@ -45,7 +45,7 @@ public class SonarMetricsHandler implements RequestHandler<Map<String, Object>, 
 //            List<WriteRequest> metricList = new ArrayList<WriteRequest>();
 
 
-           // TODO this must be changed to DynamoDb batch Put 
+           // TODO this must be changed to DynamoDb batch Put
 
             for (SonarEvent.QualityGate.Condition condition : sonarQualityGateConditions) {
                 logger.info("Saving metrics for condition: " + condition.toString());

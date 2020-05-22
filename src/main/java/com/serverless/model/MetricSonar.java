@@ -2,11 +2,16 @@ package com.serverless.model;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.serverless.config.DynamoDBAdapter;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 @DynamoDBTable(tableName = "PLACEHOLDER_TABLE_NAME")
 public class MetricSonar {
@@ -155,5 +160,24 @@ public class MetricSonar {
 
     public void setSonarErrorThreshold(String sonarErrorThreshold) {
         this.sonarErrorThreshold = sonarErrorThreshold;
+    }
+
+    public List<MetricSonar> listByMetricsType(String metricType) throws IOException {
+
+
+        Map<String, String> expressionAttributesNames = new HashMap<>();
+        expressionAttributesNames.put("#metricType", "metricType");
+
+        Map<String, AttributeValue> expressionAttributeValues = new HashMap<>();
+        expressionAttributeValues.put(":metricType", new AttributeValue().withS(metricType));
+
+        DynamoDBQueryExpression<MetricSonar> dynamoDBQueryExpression = new DynamoDBQueryExpression<MetricSonar>()
+                .withIndexName("metricTypeIndex").withKeyConditionExpression("#metricType = :metricType")
+                .withExpressionAttributeNames(expressionAttributesNames)
+                .withExpressionAttributeValues(expressionAttributeValues).withScanIndexForward(true)
+                .withConsistentRead(false);
+
+        List<MetricSonar> metrics = mapper.query(MetricSonar.class, dynamoDBQueryExpression);
+        return metrics;
     }
 }
