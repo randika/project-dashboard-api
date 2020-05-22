@@ -81,7 +81,7 @@ public class GithubMetricsCreateHandler implements RequestHandler<Map<String, Ob
             logger.info("metricId: " + metric.getMetricId() + " Saved successfully");
             // send the response back
             return ApiGatewayResponse.builder()
-                    .setStatusCode(200)
+                    .setStatusCode(201)
                     .setObjectBody(metric)
                     .setHeaders(Collections.singletonMap("X-App", "project-dashboard-api")) // TODO: Get it from config
                     .build();
