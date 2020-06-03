@@ -93,6 +93,34 @@ public class MetricGithub {
     public void setCreatedAt(Date createdAt){
         this.createdAt = createdAt;
     }
+    
+    /**
+	 * get metrics for a given project
+	 * @param projectName
+	 * @return
+	 * @throws IOException
+	 */
+	public List<MetricGithub> getMetricListByProjectAndType(String projectName, String metricType) throws IOException {
+		List<MetricGithub> metricsGithub = null;
+
+        HashMap<String, AttributeValue> av = new HashMap<String, AttributeValue>();
+        av.put(":v1", new AttributeValue().withS(projectName));
+        av.put(":v2", new AttributeValue().withS(metricType));
+        DynamoDBQueryExpression<MetricGithub> queryExp = new DynamoDBQueryExpression<MetricGithub>()
+        		.withIndexName("metricTypeIndex").withKeyConditionExpression("metricType = :v2")
+                .withFilterExpression("projectName = :v1")
+                .withExpressionAttributeValues(av)
+                .withConsistentRead(false);
+
+        PaginatedQueryList<MetricGithub> result = this.mapper.query(MetricGithub.class, queryExp);
+        if (result.size() > 0) {
+        	metricsGithub = result;
+          logger.info("Metrics for project"+ projectName + ": " + metricsGithub);
+        } else {
+          logger.info("Metrics for the given project("+ projectName +"not Found.");
+        }
+        return metricsGithub;
+    }
 
     public MetricGithub() {
         // build the mapper config

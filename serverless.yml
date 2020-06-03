@@ -67,6 +67,17 @@ resources:
             ProvisionedThroughput:
               ReadCapacityUnits: 1
               WriteCapacityUnits: 1
+          -
+            IndexName: projectNameIndex
+            KeySchema:
+              -
+                AttributeName: projectName
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
     DynamoDbTableProjects:
       Type: 'AWS::DynamoDB::Table'
       DeletionPolicy: Retain
@@ -158,6 +169,13 @@ functions:
     events:
       - http:
           path: /metrics
+          method: get
+          cors: true
+  metricsProjectMetricsGet:
+    handler: com.serverless.metrics.GetProjectMetricsHandler
+    events:
+      - http:
+          path: /metrics?projectId={projectId}&metricType={metricType}
           method: get
           cors: true
   webhooksSonarMetrics:
