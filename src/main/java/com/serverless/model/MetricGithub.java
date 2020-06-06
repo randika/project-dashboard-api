@@ -7,6 +7,7 @@ import com.serverless.config.DynamoDBAdapter;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -101,7 +102,7 @@ public class MetricGithub {
 	 * @throws IOException
 	 */
 	public List<MetricGithub> getMetricListByProjectAndType(String projectName, String metricType) throws IOException {
-		List<MetricGithub> metricsGithub = null;
+		List<MetricGithub> metricsGithub = new ArrayList<MetricGithub>();
 
         HashMap<String, AttributeValue> av = new HashMap<String, AttributeValue>();
         av.put(":v1", new AttributeValue().withS(projectName));

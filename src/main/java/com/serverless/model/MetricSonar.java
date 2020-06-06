@@ -7,6 +7,7 @@ import com.serverless.config.DynamoDBAdapter;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -101,7 +102,7 @@ public class MetricSonar {
 	 * @throws IOException
 	 */
 	public List<MetricSonar> getMetricListByProjectAndType(String projectName, String metricType) throws IOException {
-		List<MetricSonar> metricSonar = null;
+		List<MetricSonar> metricSonar = Collections.emptyList();
 
         HashMap<String, AttributeValue> av = new HashMap<String, AttributeValue>();
         av.put(":v1", new AttributeValue().withS(projectName));

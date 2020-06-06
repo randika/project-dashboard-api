@@ -23,36 +23,48 @@ public class GetProjectMetricsHandler implements RequestHandler<Map<String, Obje
 
 	            String projectId = queryStringParameters.get("projectId");
 	            String metricType = queryStringParameters.get("metricType");
-	            String projectName = new Project().get(projectId).getProjectName();
+	            Project project = new Project().get(projectId);
+	            if (project == null) {
+	            	logger.info("E004: : Invalid project id" + projectId);
 
-	            if(metricType.contains("github")){
-	                logger.info(">>>>>>>>>>>>>>>> listByMetricsType:"+ metricType + "and Project: " + projectName);
-	                List<MetricGithub> metricsGithubList = new MetricGithub().getMetricListByProjectAndType(projectName, metricType);
-	                return ApiGatewayResponse.builder()
-	                        .setStatusCode(200)
-	                        .setObjectBody(metricsGithubList)
-	                        .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & Serverless"))
-	                        .build();
-	            }
+		            Response responseBody = new Response("Invalid project id: ", input);
+		  
+		            return ApiGatewayResponse.builder()
+		                    .setStatusCode(400)
+		                    .setObjectBody(responseBody)
+		                    .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & Serverless"))
+		                    .build();
+	            } else {
+	            	String projectName = project.getProjectName();
+	            	if(metricType.contains("github")){
+		                logger.info(">>>>>>>>>>>>>>>> listByMetricsType:"+ metricType + "and Project: " + projectName);
+		                List<MetricGithub> metricsGithubList = new MetricGithub().getMetricListByProjectAndType(projectName, metricType);
+		                return ApiGatewayResponse.builder()
+		                        .setStatusCode(200)
+		                        .setObjectBody(metricsGithubList)
+		                        .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & Serverless"))
+		                        .build();
+		            }
 
-	            if(metricType.contains("sonar")){
-	                logger.info(">>>>>>>>>>>>>>>> listByMetricsType:"+ metricType + "and Project: " + projectName);
-	                List<MetricSonar> metricSonarList = new MetricSonar().getMetricListByProjectAndType(projectName, metricType);
-	                return ApiGatewayResponse.builder()
-	                        .setStatusCode(200)
-	                        .setObjectBody(metricSonarList)
-	                        .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & Serverless"))
-	                        .build();
-	            }else {
-	                
-	                Response responseBody = new Response("invalid metric", input);
+		            if(metricType.contains("sonar")){
+		                logger.info(">>>>>>>>>>>>>>>> listByMetricsType:"+ metricType + "and Project: " + projectName);
+		                List<MetricSonar> metricSonarList = new MetricSonar().getMetricListByProjectAndType(projectName, metricType);
+		                return ApiGatewayResponse.builder()
+		                        .setStatusCode(200)
+		                        .setObjectBody(metricSonarList)
+		                        .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & Serverless"))
+		                        .build();
+		            }else {
+		                
+		                Response responseBody = new Response("invalid metric", input);
 
-	                return ApiGatewayResponse.builder()
-	                        .setStatusCode(200)
-	                        .setObjectBody(responseBody)
-	                        .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & Serverless"))
-	                        .build();
-	            }
+		                return ApiGatewayResponse.builder()
+		                        .setStatusCode(200)
+		                        .setObjectBody(responseBody)
+		                        .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & Serverless"))
+		                        .build();
+		            }
+	            }    
 
 	        } catch (Exception ex) {	               
 	            logger.error("E004: Error in fetching the metrics list: " + ex);

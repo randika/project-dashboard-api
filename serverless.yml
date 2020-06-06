@@ -43,6 +43,9 @@ resources:
             AttributeName: metricType
             AttributeType: S
           -
+            AttributeName: projectName
+            AttributeType: S
+          -
             AttributeName: createdAt
             AttributeType: S
         KeySchema:
@@ -171,13 +174,6 @@ functions:
           path: /metrics
           method: get
           cors: true
-  metricsProjectMetricsGet:
-    handler: com.serverless.metrics.GetProjectMetricsHandler
-    events:
-      - http:
-          path: /metrics?projectId={projectId}&metricType={metricType}
-          method: get
-          cors: true
   webhooksSonarMetrics:
     handler: com.serverless.webhooks.SonarMetricsHandler
     events:
@@ -185,3 +181,15 @@ functions:
           path: /webhooks/sonar
           method: post
           cors: true
+  metricsProjectGet:
+    handler: com.serverless.metrics.GetProjectMetricsHandler
+    events:
+      - http:
+          path: /metrics
+          method: get
+          cors: true
+	      request:
+		   parameters:
+			querystrings:
+			 projectId: true
+		     metricType: true

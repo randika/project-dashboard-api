@@ -27,6 +27,7 @@ public class CreateHandler implements RequestHandler<Map<String, Object>, ApiGat
             project.setProjectName(body.get("projectName").asText());
             project.setTeamId(body.get("teamId").asText());
             project.setTeamName(body.get("teamName").asText());
+            project.setProgramName(body.get("programName").asText());
             project.setCreatedAt(Date.from(Instant.now()));
             project.save(project);
             

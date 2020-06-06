@@ -26,6 +26,7 @@ public class UpdateHandler implements RequestHandler<Map<String, Object>, ApiGat
             project.setProjectName(body.get("projectName").asText());
             project.setTeamId(body.get("teamId").asText());
             project.setTeamName(body.get("teamName").asText());
+            project.setProgramName(body.get("programName").asText());
             project.save(project);
             
             Map<String, String> headers = new HashMap<>();
