@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -102,8 +103,8 @@ public class MetricGithub {
 	 * @throws IOException
 	 */
 	public List<MetricGithub> getMetricListByProjectAndType(String projectName, String metricType) throws IOException {
-		List<MetricGithub> metricsGithub = new ArrayList<MetricGithub>();
-
+		List<MetricGithub> metricsGithub = Collections.emptyList();
+		
         HashMap<String, AttributeValue> av = new HashMap<String, AttributeValue>();
         av.put(":v1", new AttributeValue().withS(projectName));
         av.put(":v2", new AttributeValue().withS(metricType));
