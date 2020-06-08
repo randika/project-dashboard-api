@@ -43,6 +43,9 @@ resources:
             AttributeName: metricType
             AttributeType: S
           -
+            AttributeName: projectName
+            AttributeType: S
+          -
             AttributeName: createdAt
             AttributeType: S
         KeySchema:
@@ -61,6 +64,17 @@ resources:
             KeySchema:
               -
                 AttributeName: metricType
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+          -
+            IndexName: projectNameIndex
+            KeySchema:
+              -
+                AttributeName: projectName
                 KeyType: HASH
             Projection:
               ProjectionType: ALL
@@ -167,3 +181,15 @@ functions:
           path: /webhooks/sonar
           method: post
           cors: true
+  metricsProjectGet:
+    handler: com.serverless.metrics.GetProjectMetricsHandler
+    events:
+      - http:
+          path: /metrics
+          method: get
+          cors: true
+	      request:
+		   parameters:
+			querystrings:
+			 projectId: true
+		     metricType: true

@@ -7,6 +7,7 @@ import com.serverless.config.DynamoDBAdapter;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -94,7 +95,33 @@ public class MetricSonar {
         this.mapper = this.db_adapter.createDbMapper(mapperConfig);
     }
 
+    /**
+	 * get metrics for a given project
+	 * @param projectName
+	 * @return
+	 * @throws IOException
+	 */
+	public List<MetricSonar> getMetricListByProjectAndType(String projectName, String metricType) throws IOException {
+		List<MetricSonar> metricSonar = Collections.emptyList();
 
+        HashMap<String, AttributeValue> av = new HashMap<String, AttributeValue>();
+        av.put(":v1", new AttributeValue().withS(projectName));
+        av.put(":v2", new AttributeValue().withS(metricType));
+        DynamoDBQueryExpression<MetricSonar> queryExp = new DynamoDBQueryExpression<MetricSonar>()
+        	.withIndexName("metricTypeIndex").withKeyConditionExpression("metricType = :v2")
+            .withFilterExpression("projectName = :v1")
+            .withExpressionAttributeValues(av)
+            .withConsistentRead(false);
+
+        PaginatedQueryList<MetricSonar> result = this.mapper.query(MetricSonar.class, queryExp);
+        if (result.size() > 0) {
+        	metricSonar = result;
+          logger.info("Metrics for project"+ projectName + ": " + metricSonar);
+        } else {
+          logger.info("Metrics for the given project("+ projectName +"not Found.");
+        }
+        return metricSonar;
+    }
 
     public String toString() {
         return String.format("Metric [metricId=%s, metricType=%s]", this.metricId, this.metricType);

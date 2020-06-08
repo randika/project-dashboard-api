@@ -1,5 +1,6 @@
 {
-    "pathParameters":{
-    	"id": "dea8e09a-0a41-42a1-bd5a-8e5baea55af1"
-   }
+	"queryStringParameters":{
+		"projectId":"be178334-8935-4d29-b151-16e376189651",
+		"metricType":"sonar.new_coverage.created"
+	}
 }
