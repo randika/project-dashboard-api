@@ -1,6 +1,7 @@
 package com.serverless.metrics;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,12 +19,20 @@ public class GetProjectMetricsHandler implements RequestHandler<Map<String, Obje
 	   private final Logger logger = Logger.getLogger(this.getClass());
 
 	    public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
-	        try {
+	    	
+	    	Map<String, String> headers = new HashMap<>();
+            headers.put("Content-Type", "application/json");
+            headers.put("Access-Control-Allow-Origin", "*");
+            headers.put("Access-Control-Allow-Headers", "*");
+            headers.put("Access-Control-Allow-Methods", "OPTIONS,POST,GET,DELETE");
+
+	    	try {
 	            Map<String,String> queryStringParameters =  (Map<String,String>)input.get("queryStringParameters");
 
 	            String projectId = queryStringParameters.get("projectId");
 	            String metricType = queryStringParameters.get("metricType");
 	            Project project = new Project().get(projectId);
+	            
 	            if (project == null) {
 	            	logger.info("E004: : Invalid project id" + projectId);
 
@@ -32,7 +41,7 @@ public class GetProjectMetricsHandler implements RequestHandler<Map<String, Obje
 		            return ApiGatewayResponse.builder()
 		                    .setStatusCode(400)
 		                    .setObjectBody(responseBody)
-		                    .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & Serverless"))
+		                    .setHeaders(headers)
 		                    .build();
 	            } else {
 	            	String projectName = project.getProjectName();
@@ -42,7 +51,7 @@ public class GetProjectMetricsHandler implements RequestHandler<Map<String, Obje
 		                return ApiGatewayResponse.builder()
 		                        .setStatusCode(200)
 		                        .setObjectBody(metricsGithubList)
-		                        .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & Serverless"))
+		                        .setHeaders(headers)
 		                        .build();
 		            }
 
@@ -52,7 +61,7 @@ public class GetProjectMetricsHandler implements RequestHandler<Map<String, Obje
 		                return ApiGatewayResponse.builder()
 		                        .setStatusCode(200)
 		                        .setObjectBody(metricSonarList)
-		                        .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & Serverless"))
+		                        .setHeaders(headers)
 		                        .build();
 		            }else {
 		                
@@ -61,7 +70,7 @@ public class GetProjectMetricsHandler implements RequestHandler<Map<String, Obje
 		                return ApiGatewayResponse.builder()
 		                        .setStatusCode(200)
 		                        .setObjectBody(responseBody)
-		                        .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & Serverless"))
+		                        .setHeaders(headers)
 		                        .build();
 		            }
 	            }    
@@ -74,7 +83,7 @@ public class GetProjectMetricsHandler implements RequestHandler<Map<String, Obje
 	            return ApiGatewayResponse.builder()
 	                    .setStatusCode(500)
 	                    .setObjectBody(responseBody)
-	                    .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & Serverless"))
+	                    .setHeaders(headers)
 	                    .build();
 	        }
 	    }
