@@ -153,7 +153,7 @@ functions:
           path: /projects
           method: get
           cors: true
-  metricsListGet:
+  metricsList:
     handler: com.serverless.metrics.GetListHandler
     events:
       - http:

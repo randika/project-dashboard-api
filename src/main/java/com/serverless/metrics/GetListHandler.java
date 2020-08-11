@@ -25,9 +25,12 @@ public class GetListHandler implements RequestHandler<Map<String, Object>, ApiGa
             String projectId = queryStringParameters.get("projectId");
             String metricType = queryStringParameters.get("metricType");
 
+            logger.info(">>>>>>>>>>>>>>>> projectId:"+ projectId);
+            logger.info(">>>>>>>>>>>>>>>> metricType:"+ metricType);
+
 
             if(metricType.contains("github")){
-                logger.info(">>>>>>>>>>>>>>>> listByMetricsType:"+ metricType);
+
                 List<MetricGithub> metricsGithubList = new MetricGithub().listByMetricsType(metricType);
                 return ApiGatewayResponse.builder()
                         .setStatusCode(200)
